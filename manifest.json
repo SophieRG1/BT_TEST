@@ -1,0 +1,21 @@
+{
+  "name": "Robot Control Micro:Bit", // installation name
+  "short_name": "Robot Control Micro:Bit", // app title name
+  "start_url": ".",
+
+   "display": "fullscreen",
+
+  "icons":[
+    {
+      "src":"img/ikona_rounded.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src":"img/ikona_rounded.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+
+}
