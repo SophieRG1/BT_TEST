@@ -152,7 +152,7 @@ button#sendStart:active {
 
 background-image: none;
 
-  animation-name: rotate;
+animation-name: rotate;
 animation-duration: 4s;
 animation-iteration-count: infinite;
 animation-timing-function: linear;
@@ -807,9 +807,9 @@ animation-timing-function: linear;
 
 #hacedores_logo {
 position: absolute;
-bottom: 10px;
-right: 25px;
-width: 350px;
+bottom: 15px;
+right: 30px;
+width: 300px;
 z-index: 1000;
 
 }
