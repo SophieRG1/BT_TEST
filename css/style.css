@@ -463,7 +463,7 @@ transition: all .2s ease-in-out;
 
 #menu_left {
   position: absolute;
-  top:10px;
+  top:25px;
   right:95px;
   z-index: 5002;
 
