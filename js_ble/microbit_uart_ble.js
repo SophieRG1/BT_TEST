@@ -35,16 +35,21 @@ async function connectButtonPressed() {
     rxCharacteristic = await service.getCharacteristic(
       UART_RX_CHARACTERISTIC_UUID
     );
-    document.getElementById('robotShow').classList.add("robotShow_connected");
+    
+    console.log(`Device ${uBitDevice.name} is connected.`);
+    
+    document.querySelector('.device').innerText = `${uBitDevice.name}`; //name
+  
+    
+    
+    document.getElementById('pair_microbit').classList.add("mb_connected");
   } catch (error) {
     console.log(error);
   }
 }
 
 function disconnectButtonPressed() {
-  if (!uBitDevice) {
-    return;
-  }
+  if (!uBitDevice) {return;}
 
   if (uBitDevice.gatt.connected) {
     uBitDevice.gatt.disconnect();
@@ -59,8 +64,8 @@ async function sendUART(num) {
 
   let encoder = new TextEncoder();
   queueGattOperation(() => rxCharacteristic.writeValue(encoder.encode(num+"\n"))
-      .then(() => console.log("WRITE"))
-      .catch(error => console.error('Błąd podczas wysyłania danych:', error)));
+      //.then(() => console.log("WRITE"))
+      .catch(error => console.error('Reconnect please:', error)));
 }
 
 
@@ -76,16 +81,63 @@ function queueGattOperation(operation) {
 
 
 function onTxCharacteristicValueChanged(event) {
+  
   let receivedData = [];
+ 
+  
   for (var i = 0; i < event.target.value.byteLength; i++) {
     receivedData[i] = event.target.value.getUint8(i);
   }
-
+  
   const receivedString = String.fromCharCode.apply(null, receivedData);
   console.log(receivedString);
-  if (receivedString === "S") {
+
+
+  if (receivedString === "SHAKE") {
     console.log("Shaken!");
   }
+  
+  
+  var luz;
+  var temp;
+  var compass;
+  var sound
+  var a;
+  var b;
+  var logo;
+  
+
+  if (receivedString.startsWith("L")) {
+    luz = parseInt(receivedString.substr(1));
+    document.querySelector('.luzTexto').innerText = luz;
+  } 
+  else if (receivedString.startsWith("T")) {
+    temp = parseInt(receivedString.substr(1));
+    document.querySelector('.tempTexto').innerText = temp +"°";
+  }
+  else if (receivedString.startsWith("C")) {
+    compass = parseInt(receivedString.substr(1));
+    document.querySelector('.compassTexto').innerText = compass +"°";
+  } 
+  else if (receivedString.startsWith("S")) {
+    sound = parseInt(receivedString.substr(1));
+    document.querySelector('.soundTexto').innerText = sound;
+  } 
+  else if (receivedString.startsWith("A")) {
+    a = parseInt(receivedString.substr(1));
+    document.querySelector('.aTexto').innerText = a;
+  } 
+  else if (receivedString.startsWith("B")) {
+    b = parseInt(receivedString.substr(1));
+    document.querySelector('.bTexto').innerText = b;
+  } 
+  else if (receivedString.startsWith("P")) {
+    logo = parseInt(receivedString.substr(1));
+    document.querySelector('.logoTexto').innerText = logo;
+  } 
+  
+    
+
 }
 
 
@@ -93,5 +145,11 @@ function onTxCharacteristicValueChanged(event) {
 function onDisconnected(event) {
   let device = event.target;
   console.log(`Device ${device.name} is disconnected.`);
-  document.getElementById('robotShow').classList.remove("robotShow_connected");
+  //document.querySelector('.device').innerText = `Device ${device.name} is disconnected.`; //device_name
+  
+  document.getElementById('pair_microbit').classList.remove("mb_connected");
 }
+
+
+
+
